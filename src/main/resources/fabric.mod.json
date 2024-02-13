@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "mothutils",
+  "version": "${version}",
+  "name": "MotHutils",
+  "description": "Little features for Scaled server by aaronfranke",
+  "authors": [
+    "MotH"
+  ],
+  "contact": {
+    "website": "https://moths.games",
+    "repo": "https://github.com/zf-moth/MotHutils"
+  },
+  "license": "unlicense",
+  "icon": "assets/mothutils/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.zfmoth.mothutils.client.MotHutilsClient"
+    ],
+    "main": [
+      "org.zfmoth.mothutils.MotHutils"
+    ]
+  },
+  "mixins": [
+    "mothutils.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
