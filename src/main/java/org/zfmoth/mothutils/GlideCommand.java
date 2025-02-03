@@ -17,6 +17,8 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static org.zfmoth.mothutils.Constants.*;
 
 public class GlideCommand {
+    private static final boolean PRINT_GLIDE_STATE = false;
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("glide")
             .requires(source -> source.hasPermissionLevel(2))
@@ -65,11 +67,15 @@ public class GlideCommand {
 
     private static void executeAdd(ServerCommandSource source, GameProfile playerName) {
         if (MotHutils.Glide_Allowed.contains(playerName.getId())) {
-            source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is already allowed to glide."),true);
+            if (PRINT_GLIDE_STATE) {
+                source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is already allowed to glide."), true);
+            }
             return;
         }
         MotHutils.addGlide_Profile(playerName.getId());
-        source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is allowed to glide now."),true);
+        if (PRINT_GLIDE_STATE) {
+            source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is allowed to glide now."), true);
+        }
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeBoolean(true);
         ServerPlayNetworking.send(source.getServer().getPlayerManager().getPlayer(playerName.getId()), GLIDE_SYNC_PACKET_ID, buffer);
@@ -77,11 +83,15 @@ public class GlideCommand {
 
     private static void executeRemove(ServerCommandSource source, GameProfile playerName) {
         if (!MotHutils.Glide_Allowed.contains(playerName.getId())) {
-            source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is already not allowed to glide."),true);
+            if (PRINT_GLIDE_STATE) {
+                source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is already not allowed to glide."), true);
+            }
             return;
         }
         MotHutils.removeGlide_Profile(playerName.getId());
-        source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is no longer allowed to glide."),true);
+        if (PRINT_GLIDE_STATE) {
+            source.sendFeedback(() -> Text.literal("Player " + playerName.getName() + " is no longer allowed to glide."), true);
+        }
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeBoolean(false);
         ServerPlayNetworking.send(source.getServer().getPlayerManager().getPlayer(playerName.getId()), GLIDE_SYNC_PACKET_ID, buffer);
